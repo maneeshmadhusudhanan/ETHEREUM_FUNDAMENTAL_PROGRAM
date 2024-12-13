@@ -10,3 +10,4 @@ function setEmployeeDetails(string memory _name, uint _age,uint _empID)public  {
 function getPersonalDetails(string memory) {
     code
 }
+
