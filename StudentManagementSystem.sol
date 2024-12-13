@@ -11,11 +11,11 @@ contract SMS{
       uint8 sem;
       Department dept;
       uint8 CGPA;
-      uint32 rollno;
+      uint40 rollno;
       bool exist;
     }
 
-    mapping(uint32 => Student) private studentDetails;
+    mapping(uint40 => Student) private studentDetails;
 
      
     constructor() {
@@ -23,27 +23,27 @@ contract SMS{
     }
 
     modifier admin(){
-        require(msg.sender == staffadvisor,"You cannot access this Function");
+        require(msg.sender == staffadvisor,"Stafadvisor only have  access to this Function");
         _;
     }
-    modifier verifyStudent(uint32 rollno){
-        require(studentDetails[rollno].exist,"Roll Number does not exist");
+    modifier verifyStudent(uint40 rollno){
+        require(studentDetails[rollno].exist,"Student Roll Number does not exist");
         _;
     }
 
-    function addStudent(string memory _name,uint8 _sem,Department _dept,uint8 _CGPA,uint32 _rollno) public  admin {
+    function addStudent(string memory _name,uint8 _sem,Department _dept,uint8 _CGPA,uint40 _rollno) public  admin {
             
-            require(!studentDetails[_rollno].exist, "Roll number is already exists");
+            require(!studentDetails[_rollno].exist, "StudentRoll number is already exists");
             studentDetails[_rollno] = Student(_name,_sem,_dept,_CGPA,_rollno,true);
     }
 
-     function getStudent(uint32 _rollno) public view admin returns (string memory name, uint8 sem, Department dept, uint8 CGPA, uint32 rollno) {
+     function getStudent(uint40 _rollno) public view admin returns (string memory name, uint8 sem, Department dept, uint8 CGPA, uint40 rollno) {
         
         Student memory student = studentDetails[_rollno];
         return (student.name, student.sem, student.dept, student.CGPA, student.rollno);
     }
 
-    function editData(uint8 _sem,Department _dept,uint8 _CGPA,uint32 _rollno) public admin verifyStudent(_rollno){
+    function editData(uint8 _sem,Department _dept,uint8 _CGPA,uint40 _rollno) public admin verifyStudent(_rollno){
 
                 Student storage student = studentDetails[_rollno];
                 student.sem= _sem;
@@ -51,7 +51,7 @@ contract SMS{
                 student.CGPA = _CGPA; 
     }
 
-    function editName(string memory _name,uint32 _rollno) public verifyStudent(_rollno){
+    function editName(string memory _name,uint40 _rollno) public verifyStudent(_rollno){
 
                 Student storage student = studentDetails[_rollno];
                 student.name= _name;
